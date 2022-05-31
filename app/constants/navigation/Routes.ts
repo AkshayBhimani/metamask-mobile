@@ -13,6 +13,7 @@ const Routes = {
     REGION_HAS_STARTED: 'RegionHasStarted',
     ORDER_DETAILS: 'OrderDetails',
   },
+  LEDGER_MESSAGE_SIGN_MODAL: 'LedgerMessageSignModal',
 };
 
 export default Routes;

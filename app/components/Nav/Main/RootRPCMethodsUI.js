@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { StyleSheet, Alert, InteractionManager } from 'react-native';
 import PropTypes from 'prop-types';
@@ -59,7 +59,7 @@ import { mockTheme, useAppThemeFromContext } from '../../../util/theme';
 import withQRHardwareAwareness from '../../UI/QRHardware/withQRHardwareAwareness';
 import QRSigningModal from '../../UI/QRHardware/QRSigningModal';
 import { networkSwitched } from '../../../actions/onboardNetwork';
-import ReusableModal, { ReusableModalRef } from '../../UI/ReusableModal';
+import Routes from '../../../constants/navigation/Routes';
 
 const hstInterface = new ethers.utils.Interface(abi);
 
@@ -95,8 +95,6 @@ const RootRPCMethodsUI = (props) => {
   const toggleApproveModal = props.toggleApproveModal;
   const toggleDappTransactionModal = props.toggleDappTransactionModal;
   const setEtherTransaction = props.setEtherTransaction;
-
-  const modalRef = useRef(null);
 
   const showPendingApprovalModal = ({ type, origin }) => {
     InteractionManager.runAfterInteractions(() => {
@@ -462,17 +460,12 @@ const RootRPCMethodsUI = (props) => {
       !approveModalVisible &&
       !dappTransactionModalVisible &&
       isLedgerAccount;
-    console.log(
-      'RootRPCMethodsUI',
-      shouldRenderThisModal,
-      ledgerSignMessageModalVisible,
-    );
 
-    return ledgerSignMessageModalVisible && shouldRenderThisModal ? (
-      <ReusableModal ref={modalRef}>
-        <LedgerMessageSignModal />
-      </ReusableModal>
-    ) : null;
+    if (ledgerSignMessageModalVisible && shouldRenderThisModal) {
+      props.navigation.navigate('LedgerConnectFlow', {
+        screen: Routes.LEDGER_MESSAGE_SIGN_MODAL,
+      });
+    }
   };
 
   const renderQRSigningModal = () => {

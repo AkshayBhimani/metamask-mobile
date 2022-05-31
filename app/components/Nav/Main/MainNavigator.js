@@ -70,6 +70,7 @@ import { colors as importedColors } from '../../../styles/common';
 import OrderDetails from '../../UI/FiatOnRampAggregator/Views/OrderDetails';
 import BrowserUrlModal from '../../Views/BrowserUrlModal';
 import Routes from '../../../constants/navigation/Routes';
+import LedgerMessageSignModal from '../../UI/LedgerModals/LedgerMessageSignModal';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -506,9 +507,30 @@ const SetPasswordFlow = () => (
   </Stack.Navigator>
 );
 
+// const LedgerModalFlow = () => (
+//   <Stack.Navigator
+//     initialRouteName={Routes.LedgerMessageSignModal}
+//     mode={'modal'}
+//     screenOptions={{
+//       cardStyle: { backgroundColor: importedColors.transparent },
+//     }}
+//   >
+//     <Stack.Screen
+//       name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
+//       component={LedgerMessageSignModal}
+//       options={{ animationEnabled: false, headerShown: false }}
+//     />
+//   </Stack.Navigator>
+// );
+
 const LedgerConnectFlow = ({ navigation }) => (
-  <Stack.Navigator initialRouteName="LedgerConnect">
+  <Stack.Navigator initialRouteName="LedgerConnect" mode={'modal'}>
     <Stack.Screen name="LedgerConnect" component={LedgerConnect} />
+    <Stack.Screen
+      name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
+      component={LedgerMessageSignModal}
+      options={{ animationEnabled: false, headerShown: false }}
+    />
   </Stack.Navigator>
 );
 

@@ -1,10 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Engine from '../../../core/Engine';
 import { closeLedgerSignModal } from '../../../actions/modals';
 import LedgerConfirmationModal from './LedgerConfirmationModal';
+import ReusableModal, { ReusableModalRef } from '../ReusableModal';
+import { createStyles } from './styles';
+import { useAppThemeFromContext, mockTheme } from '../../../util/theme';
 
 const LedgerMessageSignModal = () => {
+  const modalRef = useRef<ReusableModalRef | null>(null);
   const dispatch = useDispatch();
   const {
     messageParams,
@@ -14,6 +18,8 @@ const LedgerMessageSignModal = () => {
     deviceId,
   } = useSelector((state: any) => state.modals.ledgerSignMessageActionParams);
   const { KeyringController } = Engine.context as any;
+  const { colors } = useAppThemeFromContext() || mockTheme;
+  const styles = createStyles(colors);
 
   const executeOnLedger = useCallback(async () => {
     // This requires the user to confirm on the ledger device
@@ -45,14 +51,14 @@ const LedgerMessageSignModal = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("LedgerMessageSignModal");
-
   return (
-    <LedgerConfirmationModal
-      onConfirmation={executeOnLedger}
-      onRejection={onRejection}
-      deviceId={deviceId}
-    />
+    <ReusableModal ref={modalRef} style={styles.modal}>
+      <LedgerConfirmationModal
+        onConfirmation={executeOnLedger}
+        onRejection={onRejection}
+        deviceId={deviceId}
+      />
+    </ReusableModal>
   );
 };
 
