@@ -468,7 +468,7 @@ const RootRPCMethodsUI = (props) => {
       ledgerSignMessageModalVisible,
     );
 
-    return ledgerSignMessageModalVisible ? (
+    return ledgerSignMessageModalVisible && shouldRenderThisModal ? (
       <ReusableModal ref={modalRef}>
         <LedgerMessageSignModal />
       </ReusableModal>
