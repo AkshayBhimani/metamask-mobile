@@ -21,6 +21,8 @@ const LedgerMessageSignModal = () => {
   const { colors } = useAppThemeFromContext() || mockTheme;
   const styles = createStyles(colors);
 
+  const dismissModal = useCallback(() => modalRef?.current?.dismissModal(), []);
+
   const executeOnLedger = useCallback(async () => {
     // This requires the user to confirm on the ledger device
     let rawSignature;
@@ -42,12 +44,14 @@ const LedgerMessageSignModal = () => {
 
     onConfirmationComplete(true, rawSignature);
     dispatch(closeLedgerSignModal());
+    dismissModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRejection = useCallback(() => {
     onConfirmationComplete(false);
     dispatch(closeLedgerSignModal());
+    dismissModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
