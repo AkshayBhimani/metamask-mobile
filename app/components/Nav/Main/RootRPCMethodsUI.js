@@ -383,17 +383,36 @@ const RootRPCMethodsUI = (props) => {
     ],
   );
 
-  const onSignAction = () => setShowPendingApproval(false);
+  const renderLedgerSigningModal = useCallback(() => {
+    const {
+      approveModalVisible,
+      dappTransactionModalVisible,
+      selectedAddress,
+    } = props;
+    const isLedgerAccount = isHardwareAccount(selectedAddress, [
+      KeyringTypes.ledger,
+    ]);
+    const shouldRenderThisModal =
+      !approveModalVisible && !dappTransactionModalVisible && isLedgerAccount;
+
+    if (shouldRenderThisModal) {
+      props.navigation.navigate('LedgerConnectFlow', {
+        screen: Routes.LEDGER_MESSAGE_SIGN_MODAL,
+      });
+    }
+  }, [props]);
+
+  const onSignAction = useCallback(() => {
+    setShowPendingApproval(false);
+    renderLedgerSigningModal();
+  }, [renderLedgerSigningModal]);
 
   const toggleExpandedMessage = () =>
     setShowExpandedMessage(!showExpandedMessage);
 
   const renderSigningModal = () => (
     <Modal
-      isVisible={
-        showPendingApproval?.type === ApprovalTypes.SIGN_MESSAGE &&
-        !props.ledgerSignMessageModalVisible
-      }
+      isVisible={showPendingApproval?.type === ApprovalTypes.SIGN_MESSAGE}
       animationIn="slideInUp"
       animationOut="slideOutDown"
       style={styles.bottomModal}
@@ -444,29 +463,6 @@ const RootRPCMethodsUI = (props) => {
       )}
     </Modal>
   );
-
-  const renderLedgerSigningModal = () => {
-    const {
-      ledgerSignMessageModalVisible,
-      approveModalVisible,
-      dappTransactionModalVisible,
-      selectedAddress,
-    } = props;
-    const isLedgerAccount = isHardwareAccount(selectedAddress, [
-      KeyringTypes.ledger,
-    ]);
-    const shouldRenderThisModal =
-      !showPendingApproval &&
-      !approveModalVisible &&
-      !dappTransactionModalVisible &&
-      isLedgerAccount;
-
-    if (ledgerSignMessageModalVisible && shouldRenderThisModal) {
-      props.navigation.navigate('LedgerConnectFlow', {
-        screen: Routes.LEDGER_MESSAGE_SIGN_MODAL,
-      });
-    }
-  };
 
   const renderQRSigningModal = () => {
     const {
@@ -821,7 +817,6 @@ const RootRPCMethodsUI = (props) => {
       {renderAccountsApprovalModal()}
       {renderWatchAssetModal()}
       {renderQRSigningModal()}
-      {renderLedgerSigningModal()}
     </React.Fragment>
   );
 };

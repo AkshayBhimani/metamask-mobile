@@ -1,7 +1,6 @@
 import React, { useCallback, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Engine from '../../../core/Engine';
-import { closeLedgerSignModal } from '../../../actions/modals';
 import LedgerConfirmationModal from './LedgerConfirmationModal';
 import ReusableModal, { ReusableModalRef } from '../ReusableModal';
 import { createStyles } from './styles';
@@ -9,7 +8,6 @@ import { useAppThemeFromContext, mockTheme } from '../../../util/theme';
 
 const LedgerMessageSignModal = () => {
   const modalRef = useRef<ReusableModalRef | null>(null);
-  const dispatch = useDispatch();
   const {
     messageParams,
     onConfirmationComplete = () => null,
@@ -43,17 +41,22 @@ const LedgerMessageSignModal = () => {
     }
 
     onConfirmationComplete(true, rawSignature);
-    dispatch(closeLedgerSignModal());
+    // dispatch(closeLedgerSignModal());
     dismissModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    KeyringController,
+    dismissModal,
+    messageParams,
+    onConfirmationComplete,
+    type,
+    version,
+  ]);
 
   const onRejection = useCallback(() => {
     onConfirmationComplete(false);
-    dispatch(closeLedgerSignModal());
+    // dispatch(closeLedgerSignModal());
     dismissModal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dismissModal, onConfirmationComplete]);
 
   return (
     <ReusableModal ref={modalRef} style={styles.modal}>
