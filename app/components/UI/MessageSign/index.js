@@ -19,6 +19,7 @@ import {
 } from '../../../util/address';
 import { ThemeContext, mockTheme } from '../../../util/theme';
 import { openLedgerSignModal } from '../../../actions/modals';
+import { createLedgerMessageSignModalNavDetails } from '../LedgerModals/LedgerMessageSignModal';
 
 const createStyles = (colors) =>
   StyleSheet.create({
@@ -136,6 +137,7 @@ class MessageSign extends PureComponent {
     );
 
     const finalizeConfirmation = async (confirmed, rawSignature) => {
+      console.log('finalizeConfirmation', confirmed, rawSignature);
       if (!confirmed) {
         AnalyticsV2.trackEvent(
           AnalyticsV2.ANALYTICS_EVENTS.SIGN_REQUEST_CANCELLED,
@@ -160,14 +162,23 @@ class MessageSign extends PureComponent {
     if (isLedgerAccount) {
       this.props.onConfirm();
       const ledgerKeyring = await KeyringController.getLedgerKeyring();
+      console.log('MessageSign', isLedgerAccount);
 
       // Hand over process to Ledger Confirmation Modal
-      this.props.openLedgerSignModal({
-        messageParams: cleanMessageParams,
-        deviceId: ledgerKeyring.deviceId,
-        onConfirmationComplete: finalizeConfirmation,
-        type: 'signMessage',
-      });
+      // this.props.openLedgerSignModal({
+      //   messageParams: cleanMessageParams,
+      //   deviceId: ledgerKeyring.deviceId,
+      //   onConfirmationComplete: finalizeConfirmation,
+      //   type: 'signMessage',
+      // });
+      this.props.navigation.navigate(
+        ...createLedgerMessageSignModalNavDetails({
+          messageParams: cleanMessageParams,
+          deviceId: ledgerKeyring.deviceId,
+          onConfirmationComplete: finalizeConfirmation,
+          type: 'signMessage',
+        }),
+      );
     } else {
       const rawSignature = await KeyringController.signMessage(
         cleanMessageParams,

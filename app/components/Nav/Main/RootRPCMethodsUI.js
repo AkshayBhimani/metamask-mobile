@@ -404,8 +404,8 @@ const RootRPCMethodsUI = (props) => {
 
   const onSignAction = useCallback(() => {
     setShowPendingApproval(false);
-    renderLedgerSigningModal();
-  }, [renderLedgerSigningModal]);
+    // renderLedgerSigningModal();
+  }, []);
 
   const toggleExpandedMessage = () =>
     setShowExpandedMessage(!showExpandedMessage);

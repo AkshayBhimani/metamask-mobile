@@ -140,6 +140,7 @@ class PersonalSign extends PureComponent {
     );
 
     const finalizeConfirmation = async (confirmed, rawSignature) => {
+      console.log('finalizeConfirmation', confirmed, rawSignature);
       if (!confirmed) {
         AnalyticsV2.trackEvent(
           AnalyticsV2.ANALYTICS_EVENTS.SIGN_REQUEST_CANCELLED,

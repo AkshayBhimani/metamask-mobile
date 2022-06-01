@@ -5,19 +5,36 @@ import LedgerConfirmationModal from './LedgerConfirmationModal';
 import ReusableModal, { ReusableModalRef } from '../ReusableModal';
 import { createStyles } from './styles';
 import { useAppThemeFromContext, mockTheme } from '../../../util/theme';
+import {
+  createNavigationDetails,
+  useParams,
+} from '../../../util/navigation/navUtils';
+import Routes from '../../../constants/navigation/Routes';
+
+export interface LedgerMessageSignModalParams {
+  messageParams: any;
+  onConfirmationComplete: (confirmed: boolean, rawSignature?: any) => void;
+  version: any;
+  type: any;
+  deviceId: any;
+}
+
+export const createLedgerMessageSignModalNavDetails =
+  createNavigationDetails<LedgerMessageSignModalParams>(
+    'LedgerConnectFlow',
+    Routes.LEDGER_MESSAGE_SIGN_MODAL,
+  );
 
 const LedgerMessageSignModal = () => {
   const modalRef = useRef<ReusableModalRef | null>(null);
-  const {
-    messageParams,
-    onConfirmationComplete = () => null,
-    version,
-    type,
-    deviceId,
-  } = useSelector((state: any) => state.modals.ledgerSignMessageActionParams);
+  const { messageParams, version, type, deviceId } = useSelector(
+    (state: any) => state.modals.ledgerSignMessageActionParams,
+  );
   const { KeyringController } = Engine.context as any;
   const { colors } = useAppThemeFromContext() || mockTheme;
   const styles = createStyles(colors);
+
+  const { onConfirmationComplete } = useParams<LedgerMessageSignModalParams>();
 
   const dismissModal = useCallback(() => modalRef?.current?.dismissModal(), []);
 
