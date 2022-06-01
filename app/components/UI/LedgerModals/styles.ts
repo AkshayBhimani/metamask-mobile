@@ -7,5 +7,6 @@ export const createStyles = (colors: any) =>
       justifyContent: 'flex-end',
       margin: 0,
       height: 600,
+      backgroundColor: 'transparent',
     },
   });

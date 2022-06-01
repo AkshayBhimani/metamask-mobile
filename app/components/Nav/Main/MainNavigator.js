@@ -511,11 +511,22 @@ const LedgerConnectFlow = ({ navigation }) => (
   <Stack.Navigator
     initialRouteName="LedgerConnect"
     mode={'modal'}
+    // screenOptions={{
+    //   cardStyle: { backgroundColor: importedColors.transparent },
+    // }}
     screenOptions={{
-      cardStyle: { backgroundColor: importedColors.transparent },
+      //Refer to - https://reactnavigation.org/docs/stack-navigator/#animations
+      cardStyle: {
+        backgroundColor: importedColors.transparent,
+        cardStyleInterpolator: () => ({
+          overlayStyle: {
+            opacity: 0,
+          },
+        }),
+      },
+      animationEnabled: false,
     }}
   >
-    <Stack.Screen name="LedgerConnect" component={LedgerConnect} />
     <Stack.Screen
       name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
       component={LedgerMessageSignModal}
@@ -576,7 +587,20 @@ const MainNavigator = () => (
       name="ImportPrivateKeyView"
       component={ImportPrivateKeyView}
     />
-    <Stack.Screen name="LedgerConnectFlow" component={LedgerConnectFlow} />
+    <Stack.Screen name="LedgerConnectFlow" component={LedgerConnect} />
+    <Stack.Screen
+      options={{
+        //Refer to - https://reactnavigation.org/docs/stack-navigator/#animations
+        cardStyle: { backgroundColor: importedColors.transparent },
+        cardStyleInterpolator: () => ({
+          overlayStyle: {
+            opacity: 0,
+          },
+        }),
+      }}
+      name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
+      component={LedgerMessageSignModal}
+    />
     <Stack.Screen
       name="ConnectHardwareWalletFlow"
       component={ConnectHardwareWalletFlow}

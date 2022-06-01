@@ -21,7 +21,6 @@ export interface LedgerMessageSignModalParams {
 
 export const createLedgerMessageSignModalNavDetails =
   createNavigationDetails<LedgerMessageSignModalParams>(
-    'LedgerConnectFlow',
     Routes.LEDGER_MESSAGE_SIGN_MODAL,
   );
 
