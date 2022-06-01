@@ -507,29 +507,22 @@ const SetPasswordFlow = () => (
   </Stack.Navigator>
 );
 
-// const LedgerModalFlow = () => (
-//   <Stack.Navigator
-//     initialRouteName={Routes.LedgerMessageSignModal}
-//     mode={'modal'}
-//     screenOptions={{
-//       cardStyle: { backgroundColor: importedColors.transparent },
-//     }}
-//   >
-//     <Stack.Screen
-//       name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
-//       component={LedgerMessageSignModal}
-//       options={{ animationEnabled: false, headerShown: false }}
-//     />
-//   </Stack.Navigator>
-// );
-
 const LedgerConnectFlow = ({ navigation }) => (
-  <Stack.Navigator initialRouteName="LedgerConnect" mode={'modal'}>
+  <Stack.Navigator
+    initialRouteName="LedgerConnect"
+    mode={'modal'}
+    screenOptions={{
+      cardStyle: { backgroundColor: importedColors.transparent },
+    }}
+  >
     <Stack.Screen name="LedgerConnect" component={LedgerConnect} />
     <Stack.Screen
       name={Routes.LEDGER_MESSAGE_SIGN_MODAL}
       component={LedgerMessageSignModal}
-      options={{ animationEnabled: false, headerShown: false }}
+      options={{
+        animationEnabled: false,
+        headerShown: false,
+      }}
     />
   </Stack.Navigator>
 );
